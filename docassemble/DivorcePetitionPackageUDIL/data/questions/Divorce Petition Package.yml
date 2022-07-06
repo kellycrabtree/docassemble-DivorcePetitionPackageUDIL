@@ -197,6 +197,7 @@ code: |
           child6_street
       else:
         childrens_current_street
+        review3
     custodyvisitation_priorcase_yes
     custodyvisitation_priorrestrainingorders_yes
     otherpeoplewithcustodyrights_exist
@@ -2429,6 +2430,46 @@ fields:
     show if: yes_address4
     help: |
       If the children have lived at this address their entire lives, you may write "Birth." If you don't know the exact date on which the children start living at this address, you may list the month and year.
+---
+question: |
+	Please review your answers below
+review:
+	- note: "**Children's Current Address**"
+	- Change answer: childrens_current_street
+		button: |
+			% if alleged_abuse:
+      * Address: **Confidential**
+      % else:
+      * Address: **${childrens_current_street}, ${childrens_current_city}, ${childrens_current_state} ${childrens_current_zip}**
+      % endif
+			* Lives with: **${childrens_address1_livedwith_relationship}** (**${childrens_address1_livedwith}**)
+      * From: **${childrens_address1_startdate}**
+      * To: **Present**
+	- note: "**Children's 2nd Most Recent Address**"
+		show if: yes_address2
+	- Change answer: childrens_current_street
+		button: |
+			* City, State: **${childrens_address2}**
+			* Lived with: **${childrens_address2_livedwith_relationship}** (**${childrens_address2_livedwith}**)
+			* From: **${childrens_address2_startdate}**
+      * To: **${childrens_address1_startdate}**
+	- note: "**Children's 3rd Most Recent Address**"
+		show if: yes_address3
+	- Change answer: childrens_current_street
+		button: |
+			* City, State: **${childrens_address3}**
+			* Lived with: **${childrens_address3_livedwith_relationship}** (**${childrens_address3_livedwith}**)
+			* From: **${childrens_address3_startdate}**
+      * To: **${childrens_address2_startdate}**
+	- note: "**Children's 4th Most Recent Address**"
+		show if: yes_address4
+	- Change answer: childrens_current_street
+		button: |
+			* City, State: **${childrens_address4}**
+			* Lived with: **${childrens_address4_livedwith_relationship}** (**${childrens_address4_livedwith}**)
+			* From **${childrens_address4_startdate}**
+      * To: **${childrens_address3_startdate}**
+field: review3
 ---
 question: |
   **${children.item(0).name}'s Address Information**
