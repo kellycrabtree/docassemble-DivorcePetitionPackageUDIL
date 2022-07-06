@@ -43,7 +43,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
     return out
 
 setup(name='docassemble.DivorcePetitionPackageUDIL',
-      version='2.0.1',
+      version='2.0.2',
       description=(''),
       long_description='# docassemble.DivorcePetitionPackageUDIL\r\n\r\n\r\n\r\n## Author\r\n\r\nKelly Crabtree, udoitlegal@gmail.com\r\n\r\n',
       long_description_content_type='text/markdown',

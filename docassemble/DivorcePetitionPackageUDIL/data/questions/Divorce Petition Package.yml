@@ -2016,11 +2016,200 @@ validation code: |
 ---
 question: |
   Please review your answers below
-subquestion: |
-  ${ children.table }
-  
-  ${ children.add_action() }
 review: 
+  - Change answer: children.revisit
+    button: |
+      **Child 1**
+      
+      * Name: **${children.item(0).name.full()}**
+      * Age: **${children.item(0).age_in_years()}**
+      * Birthdate: **${children.item(0).birthdate}**
+      * Place of Birth: **${children.item(0).birthplace}**
+      % if children.item(0).sex == "sex_female":
+	    * Sex: **F**
+	    % else:
+	    * Sex: **M**
+      % endif
+      % if children.item(0).otherparent_exists:
+	    * Other Parent(s): **${comma_and_list(otherparties)}**
+	    % else:
+	    * Other Parent(s): **${resp.name}**
+      % endif
+  - Change answer: children.revisit
+    show if: children.target_number >= 2
+    button: |
+      **Child 2**
+      
+      * Name: **${children.item(1).name.full()}**
+      * Age: **${children.item(1).age_in_years()}**
+      * Birthdate: **${children.item(1).birthdate}**
+      * Place of Birth: **${children.item(1).birthplace}**
+      % if children.item(1).sex == "sex_female":
+	    * Sex: **F**
+	    % else:
+	    * Sex: **M**
+      % endif
+      % if children.item(1).otherparent_exists:
+	    * Other Parent(s): **${comma_and_list(otherparties)}**
+	    % else:
+	    * Other Parent(s): **${resp.name}**
+      % endif
+  - Change answer: children.revisit
+    show if: children.target_number >= 3
+    button: |
+      **Child 3**
+      
+      * Name: **${children.item(2).name.full()}**
+      * Age: **${children.item(2).age_in_years()}**
+      * Birthdate: **${children.item(2).birthdate}**
+      * Place of Birth: **${children.item(2).birthplace}**
+      % if children.item(2).sex == "sex_female":
+	    * Sex: **F**
+	    % else:
+	    * Sex: **M**
+      % endif
+      % if children.item(2).otherparent_exists:
+	    * Other Parent(s): **${comma_and_list(otherparties)}**
+	    % else:
+	    * Other Parent(s): **${resp.name}**
+      % endif
+  
+  - Change answer: children.revisit
+    show if: children.target_number >= 4
+    button: |
+      **Child 4**
+      
+      * Name: **${children.item(3).name.full()}**
+      * Age: **${children.item(3).age_in_years()}**
+      * Birthdate: **${children.item(3).birthdate}**
+      * Place of Birth: **${children.item(3).birthplace}**
+      % if children.item(3).sex == "sex_female":
+	    * Sex: **F**
+	    % else:
+	    * Sex: **M**
+      % endif
+      % if children.item(3).otherparent_exists:
+	    * Other Parent(s): **${comma_and_list(otherparties)}**
+	    % else:
+	    * Other Parent(s): **${resp.name}**
+      % endif
+  
+  - Change answer: children.revisit
+    show if: children.target_number >= 5
+    button: |
+      **Child 5**
+      
+      * Name: **${children.item(4).name.full()}**
+      * Age: **${children.item(4).age_in_years()}**
+      * Birthdate: **${children.item(4).birthdate}**
+      * Place of Birth: **${children.item(4).birthplace}**
+      % if children.item(4).sex == "sex_female":
+	    * Sex: **F**
+	    % else:
+	    * Sex: **M**
+      % endif
+      % if children.item(4).otherparent_exists:
+	    * Other Parent(s): **${comma_and_list(otherparties)}**
+	    % else:
+	    * Other Parent(s): **${resp.name}**
+      % endif
+  
+  - Change answer: children.revisit
+    show if: children.target_number >= 6
+    button: |
+      **Child 6**
+      
+      * Name: **${children.item(5).name.full()}**
+      * Age: **${children.item(5).age_in_years()}**
+      * Birthdate: **${children.item(5).birthdate}**
+      * Place of Birth: **${children.item(5).birthplace}**
+      % if children.item(5).sex == "sex_female":
+	    * Sex: **F**
+	    % else:
+	    * Sex: **M**
+      % endif
+      % if children.item(5).otherparent_exists:
+	    * Other Parent(s): **${comma_and_list(otherparties)}**
+	    % else:
+	    * Other Parent(s): **${resp.name}**
+      % endif
+  
+  - Change answer: children.revisit
+    show if: children.target_number >= 7
+    button: |
+      **Child 7**
+      
+      * Name: **${children.item(6).name.full()}**
+      * Age: **${children.item(6).age_in_years()}**
+      * Birthdate: **${children.item(6).birthdate}**
+      * Place of Birth: **${children.item(6).birthplace}**
+      % if children.item(6).sex == "sex_female":
+	    * Sex: **F**
+	    % else:
+	    * Sex: **M**
+      % endif
+      % if children.item(6).otherparent_exists:
+	    * Other Parent(s): **${comma_and_list(otherparties)}**
+	    % else:
+	    * Other Parent(s): **${resp.name}**
+      % endif
+  - Change answer: children.revisit
+    show if: children.target_number >= 8
+    button: |
+      **Child 8**
+      
+      * Name: **${children.item(7).name.full()}**
+      * Age: **${children.item(7).age_in_years()}**
+      * Birthdate: **${children.item(7).birthdate}**
+      * Place of Birth: **${children.item(7).birthplace}**
+      % if children.item(7).sex == "sex_female":
+	    * Sex: **F**
+	    % else:
+	    * Sex: **M**
+      % endif
+      % if children.item(7).otherparent_exists:
+	    * Other Parent(s): **${comma_and_list(otherparties)}**
+	    % else:
+	    * Other Parent(s): **${resp.name}**
+      % endif
+  - Change answer: children.revisit
+    show if: children.target_number >= 9
+    button: |
+      **Child 9**
+      
+      * Name: **${children.item(8).name.full()}**
+      * Age: **${children.item(8).age_in_years()}**
+      * Birthdate: **${children.item(8).birthdate}**
+      * Place of Birth: **${children.item(8).birthplace}**
+      % if children.item(8).sex == "sex_female":
+	    * Sex: **F**
+	    % else:
+	    * Sex: **M**
+      % endif
+      % if children.item(8).otherparent_exists:
+	    * Other Parent(s): **${comma_and_list(otherparties)}**
+	    % else:
+	    * Other Parent(s): **${resp.name}**
+      % endif
+  - Change answer: children.revisit
+    show if: children.target_number >= 10
+    button: |
+      **Child 10**
+      
+      * Name: **${children.item(9).name.full()}**
+      * Age: **${children.item(9).age_in_years()}**
+      * Birthdate: **${children.item(9).birthdate}**
+      * Place of Birth: **${children.item(9).birthplace}**
+      % if children.item(9).sex == "sex_female":
+	    * Sex: **F**
+	    % else:
+	    * Sex: **M**
+      % endif
+      % if children.item(9).otherparent_exists:
+	    * Other Parent(s): **${comma_and_list(otherparties)}**
+	    % else:
+	    * Other Parent(s): **${resp.name}**
+      % endif
   - Change answer: parentalrelationship_pet_mom
     button: |
       % if parentalrelationship_pet_mom and children.target_number == 1:
@@ -2038,8 +2227,16 @@ review:
       % endif
   - Change answer: unborn_child
     button: "Are you or ${resp.name.first} currently pregnant? **${yesno(unborn_child)}**"
-    
+
 field: review2
+---
+field: children.revisit
+question: |
+  Edit the children
+subquestion: |
+  ${ children.table }
+  
+  ${ children.add_action() }
 ---
 table: children.table
 rows: children
