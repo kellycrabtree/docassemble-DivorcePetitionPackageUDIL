@@ -185,16 +185,21 @@ code: |
       different_addresses
       if different_addresses:
         child1_street
+        review4_child1
         if children.target_number >= 2:
           child2_street
+          review4_child2
         if children.target_number >= 3:
-          child3_street
+          review4_child3
         if children.target_number >= 4:
           child4_street
+          review4_child4
         if children.target_number >= 5:
           child5_street
+          review4_child5
         if children.target_number >= 6:
           child6_street
+          review4_child6
       else:
         childrens_current_street
         review3
@@ -3082,6 +3087,264 @@ fields:
     show if: child6_address4
     help: |
       If the children have lived at this address their entire lives, you may write "Birth." If you don't know the exact date on which the children start living at this address, you may list the month and year.
+---
+question: |
+	Please review your answers below
+review:
+	- note: "**${children.item(0).name.first}'s** Current Address"
+	- Change answer: child1_street
+		button: |
+			% if alleged_abuse:
+      * Address: **Confidential**
+      % else:
+      * Address: **${child1_street}, ${child1_city}, ${child1_state} ${child1_zip}**
+      % endif
+	    * Lives with: **${child1_livedwith_relationship}** (**${child1_livedwith}**)
+      * From: **${child1_startdate}**
+      * To: **Present**
+	
+	- note: "**${children.item(0).name.first}'s** 2nd Most Recent Address"
+		show if: child1_address2
+	- Change answer: child1_address2_city
+		button: |
+			* City, State: **${child1_address2_city}, ${child1_address2_state}**
+			* Lived with: **${child1_address2_livedwith_relationship}** (**${child1_address2_livedwith}**)
+			* From: **${child1_address2_startdate}**
+      * To: **${child1_startdate}**
+  
+  - note: "**${children.item(0).name.first}'s** 3rd Most Recent Address"
+		show if: child1_address3
+	- Change answer: child1_address3_city
+		button: |
+			* City, State: **${child1_address3_city}, ${child1_address3_state}**
+			* Lived with: **${child1_address3_livedwith_relationship}** (**${child1_address3_livedwith}**)
+			* From: **${child1_address3_startdate}**
+      * To: **${child1_address2_startdate}**
+
+  - note: "**${children.item(0).name.first}'s** 4th Most Recent Address"
+		show if: child1_address4
+	- Change answer: child1_address4_city
+		button: |
+			* City, State: **${child1_address4_city}, ${child1_address4_state}**
+			* Lived with: **${child1_address4_livedwith_relationship}** (**${child1_address4_livedwith}**)
+			* From: **${child1_address4_startdate}**
+      * To: **${child1_address3_startdate}**
+field: review4_child1
+---
+question: |
+	Please review your answers below
+review:
+	- note: "**${children.item(1).name.first}'s** Current Address"
+	- Change answer: child2_street
+		button: |
+			% if alleged_abuse:
+      * Address: **Confidential**
+      % else:
+      * Address: **${child2_street}, ${child2_city}, ${child2_state} ${child2_zip}**
+      % endif
+	    * Lives with: **${child2_livedwith_relationship}** (**${child2_livedwith}**)
+      * From: **${child2_startdate}**
+      * To: **Present**
+	
+	- note: "**${children.item(1).name.first}'s** 2nd Most Recent Address"
+		show if: child2_address2
+	- Change answer: child2_address2_city
+		button: |
+			* City, State: **${child2_address2_city}, ${child2_address2_state}**
+			* Lived with: **${child2_address2_livedwith_relationship}** (**${child2_address2_livedwith}**)
+			* From: **${child2_address2_startdate}**
+      * To: **${child2_startdate}**
+  
+  - note: "**${children.item(1).name.first}'s** 3rd Most Recent Address"
+		show if: child2_address3
+	- Change answer: child2_address3_city
+		button: |
+			* City, State: **${child2_address3_city}, ${child2_address3_state}**
+			* Lived with: **${child2_address3_livedwith_relationship}** (**${child2_address3_livedwith}**)
+			* From: **${child2_address3_startdate}**
+      * To: **${child2_address2_startdate}**
+
+  - note: "**${children.item(1).name.first}'s** 4th Most Recent Address"
+		show if: child2_address4
+	- Change answer: child2_address4_city
+		button: |
+			* City, State: **${child2_address4_city}, ${child2_address4_state}**
+			* Lived with: **${child2_address4_livedwith_relationship}** (**${child2_address4_livedwith}**)
+			* From: **${child2_address4_startdate}**
+      * To: **${child2_address3_startdate}**
+field: review4_child2
+---
+question: |
+	Please review your answers below
+review:
+	- note: "**${children.item(2).name.first}'s** Current Address"
+	- Change answer: child3_street
+		button: |
+			% if alleged_abuse:
+      * Address: **Confidential**
+      % else:
+      * Address: **${child3_street}, ${child3_city}, ${child3_state} ${child3_zip}**
+      % endif
+	    * Lives with: **${child3_livedwith_relationship}** (**${child3_livedwith}**)
+      * From: **${child3_startdate}**
+      * To: **Present**
+	
+	- note: "**${children.item(2).name.first}'s** 2nd Most Recent Address"
+		show if: child3_address2
+	- Change answer: child3_address2_city
+		button: |
+			* City, State: **${child3_address2_city}, ${child3_address2_state}**
+			* Lived with: **${child3_address2_livedwith_relationship}** (**${child3_address2_livedwith}**)
+			* From: **${child3_address2_startdate}**
+      * To: **${child3_startdate}**
+  
+  - note: "**${children.item(2).name.first}'s** 3rd Most Recent Address"
+		show if: child3_address3
+	- Change answer: child3_address3_city
+		button: |
+			* City, State: **${child3_address3_city}, ${child3_address3_state}**
+			* Lived with: **${child3_address3_livedwith_relationship}** (**${child3_address3_livedwith}**)
+			* From: **${child3_address3_startdate}**
+      * To: **${child3_address2_startdate}**
+
+  - note: "**${children.item(2).name.first}'s** 4th Most Recent Address"
+		show if: child3_address4
+	- Change answer: child3_address4_city
+		button: |
+			* City, State: **${child3_address4_city}, ${child3_address4_state}**
+			* Lived with: **${child3_address4_livedwith_relationship}** (**${child3_address4_livedwith}**)
+			* From: **${child3_address4_startdate}**
+      * To: **${child3_address3_startdate}**
+field: review4_child3
+---
+question: |
+	Please review your answers below
+review:
+	- note: "**${children.item(3).name.first}'s** Current Address"
+	- Change answer: child4_street
+		button: |
+			% if alleged_abuse:
+      * Address: **Confidential**
+      % else:
+      * Address: **${child4_street}, ${child4_city}, ${child4_state} ${child4_zip}**
+      % endif
+	    * Lives with: **${child4_livedwith_relationship}** (**${child4_livedwith}**)
+      * From: **${child4_startdate}**
+      * To: **Present**
+	
+	- note: "**${children.item(3).name.first}'s** 2nd Most Recent Address"
+		show if: child4_address2
+	- Change answer: child4_address2_city
+		button: |
+			* City, State: **${child4_address2_city}, ${child4_address2_state}**
+			* Lived with: **${child4_address2_livedwith_relationship}** (**${child4_address2_livedwith}**)
+			* From: **${child4_address2_startdate}**
+      * To: **${child4_startdate}**
+  
+  - note: "**${children.item(3).name.first}'s** 3rd Most Recent Address"
+		show if: child4_address3
+	- Change answer: child4_address3_city
+		button: |
+			* City, State: **${child4_address3_city}, ${child4_address3_state}**
+			* Lived with: **${child4_address3_livedwith_relationship}** (**${child4_address3_livedwith}**)
+			* From: **${child4_address3_startdate}**
+      * To: **${child4_address2_startdate}**
+
+  - note: "**${children.item(3).name.first}'s** 4th Most Recent Address"
+		show if: child4_address4
+	- Change answer: child4_address4_city
+		button: |
+			* City, State: **${child4_address4_city}, ${child4_address4_state}**
+			* Lived with: **${child4_address4_livedwith_relationship}** (**${child4_address4_livedwith}**)
+			* From: **${child4_address4_startdate}**
+      * To: **${child4_address3_startdate}**
+field: review4_child4
+---
+question: |
+	Please review your answers below
+review:
+	- note: "**${children.item(4).name.first}'s** Current Address"
+	- Change answer: child5_street
+		button: |
+			% if alleged_abuse:
+      * Address: **Confidential**
+      % else:
+      * Address: **${child5_street}, ${child5_city}, ${child5_state} ${child5_zip}**
+      % endif
+	    * Lives with: **${child5_livedwith_relationship}** (**${child5_livedwith}**)
+      * From: **${child5_startdate}**
+      * To: **Present**
+	
+	- note: "**${children.item(4).name.first}'s** 2nd Most Recent Address"
+		show if: child5_address2
+	- Change answer: child5_address2_city
+		button: |
+			* City, State: **${child5_address2_city}, ${child5_address2_state}**
+			* Lived with: **${child5_address2_livedwith_relationship}** (**${child5_address2_livedwith}**)
+			* From: **${child5_address2_startdate}**
+      * To: **${child5_startdate}**
+  
+  - note: "**${children.item(4).name.first}'s** 3rd Most Recent Address"
+		show if: child5_address3
+	- Change answer: child5_address3_city
+		button: |
+			* City, State: **${child5_address3_city}, ${child5_address3_state}**
+			* Lived with: **${child5_address3_livedwith_relationship}** (**${child5_address3_livedwith}**)
+			* From: **${child5_address3_startdate}**
+      * To: **${child5_address2_startdate}**
+
+  - note: "**${children.item(4).name.first}'s** 4th Most Recent Address"
+		show if: child5_address4
+	- Change answer: child5_address4_city
+		button: |
+			* City, State: **${child5_address4_city}, ${child5_address4_state}**
+			* Lived with: **${child5_address4_livedwith_relationship}** (**${child5_address4_livedwith}**)
+			* From: **${child5_address4_startdate}**
+      * To: **${child5_address3_startdate}**
+field: review4_child5
+---
+question: |
+	Please review your answers below
+review:
+	- note: "**${children.item(5).name.first}'s** Current Address"
+	- Change answer: child6_street
+		button: |
+			% if alleged_abuse:
+      * Address: **Confidential**
+      % else:
+      * Address: **${child6_street}, ${child6_city}, ${child6_state} ${child6_zip}**
+      % endif
+	    * Lives with: **${child6_livedwith_relationship}** (**${child6_livedwith}**)
+      * From: **${child6_startdate}**
+      * To: **Present**
+	
+	- note: "**${children.item(5).name.first}'s** 2nd Most Recent Address"
+		show if: child6_address2
+	- Change answer: child6_address2_city
+		button: |
+			* City, State: **${child6_address2_city}, ${child6_address2_state}**
+			* Lived with: **${child6_address2_livedwith_relationship}** (**${child6_address2_livedwith}**)
+			* From: **${child6_address2_startdate}**
+      * To: **${child6_startdate}**
+  
+  - note: "**${children.item(5).name.first}'s** 3rd Most Recent Address"
+		show if: child6_address3
+	- Change answer: child6_address3_city
+		button: |
+			* City, State: **${child6_address3_city}, ${child6_address3_state}**
+			* Lived with: **${child6_address3_livedwith_relationship}** (**${child6_address3_livedwith}**)
+			* From: **${child6_address3_startdate}**
+      * To: **${child6_address2_startdate}**
+
+  - note: "**${children.item(5).name.first}'s** 4th Most Recent Address"
+		show if: child6_address4
+	- Change answer: child6_address4_city
+		button: |
+			* City, State: **${child6_address4_city}, ${child6_address4_state}**
+			* Lived with: **${child6_address4_livedwith_relationship}** (**${child6_address4_livedwith}**)
+			* From: **${child6_address4_startdate}**
+      * To: **${child6_address3_startdate}**
+field: review4_child6
 ---
 question: |
   % if children.target_number >= 2: 
