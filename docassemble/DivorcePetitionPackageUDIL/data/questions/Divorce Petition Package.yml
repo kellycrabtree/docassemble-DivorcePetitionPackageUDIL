@@ -204,7 +204,11 @@ code: |
         childrens_current_street
         review3
     custodyvisitation_priorcase_yes
+    if custodyvisitation_priorcase_yes:
+      review5
     custodyvisitation_priorrestrainingorders_yes
+    if custodyvisitation_priorrestrainingorders_yes:
+      review6
     otherpeoplewithcustodyrights_exist
   
   nav.set_section('yourchildcustody')
@@ -3353,7 +3357,7 @@ question: |
     **Prior Cases Involving your Child**
   % endif
 fields: 
-  - Were you involved in, or do you know of, any other court case or custody and visitation proceeding involving any of your children?: custodyvisitation_priorcase_yes
+  - Were you involved in, or do you know of, any other court case or custody and visitation proceeding involving any of your children? (*Do not include any restraining order cases here, as you will be asked about these case types on the following pages*): custodyvisitation_priorcase_yes
     datatype: yesnoradio
     label above field: true
   - note: "Select each type of case in which your children were involved."
@@ -3363,7 +3367,7 @@ fields:
     datatype: yesnowide
     show if: custodyvisitation_priorcase_yes
     help: |
-      E.g.: Divorce, Parentage/Paternity, Child Custody, etc. *Do not include domestic violence restraining orders here*
+      E.g.: Divorce, Parentage/Paternity, Child Custody, etc. *Do not include Domestic Violence Restraining Orders here*
   - Guardianship Case: custodyvisitation_priorcase_guardianship
     datatype: yesnowide
     show if: custodyvisitation_priorcase_yes
@@ -3397,8 +3401,8 @@ fields:
     show if: custodyvisitation_priorcase_family
   - What was your connection to the case?: custodyvisitation_priorcase_family_connection
     show if: custodyvisitation_priorcase_family 
-    help: |
-      E.g.: Witness, Party, etc.
+    hint: |
+      Witness, Party, etc.
   - Is the case ongoing (i.e. currently pending)?: custodyvisitation_priorcase_family_ongoing
     datatype: yesnoradio
     show if: custodyvisitation_priorcase_family
@@ -3423,8 +3427,8 @@ fields:
     show if: custodyvisitation_priorcase_guardianship
   - What was your connection to the case?: custodyvisitation_priorcase_guardianship_connection
     show if: custodyvisitation_priorcase_guardianship 
-    help: |
-      E.g.: Witness, Party, etc.
+    hint: |
+      Witness, Party, etc.
   - Is the case ongoing (i.e. currently pending)?: custodyvisitation_priorcase_guardianship_ongoing
     datatype: yesnoradio
     show if: custodyvisitation_priorcase_guardianship
@@ -3471,8 +3475,8 @@ fields:
     show if: custodyvisitation_priorcase_other
   - What was your connection to the case?: custodyvisitation_priorcase_other_connection
     show if: custodyvisitation_priorcase_other
-    help: |
-      E.g.: Witness, Party, etc.
+    hint: |
+      Witness, Party, etc.
   - Is the case ongoing (i.e. currently pending)?: custodyvisitation_priorcase_other_ongoing
     datatype: yesnoradio
     show if: custodyvisitation_priorcase_other
@@ -3482,24 +3486,76 @@ fields:
     required: false
 ---
 question: |
+	Please review your answers below
+review:
+	- note: "**Family Law Case Information**"
+    show if: custodyvisitation_priorcase_family
+	- Change answer: custodyvisitation_priorcase_family_casenumber
+		button: |
+      * Case Number: **${custodyvisitation_priorcase_family_casenumber}**
+      * Court Name and Location: **${custodyvisitation_priorcase_family_court}**
+      * Court Order or Judgment Date: **${custodyvisitation_priorcase_family_date}**
+      * Child or Children Involved in the Case: **${custodyvisitation_priorcase_family_children}**
+      * Your Connection to the Case: **${custodyvisitation_priorcase_family_connection}**
+      * Is the case ongoing? **${yesno(custodyvisitation_priorcase_family_ongoing)}**
+
+  - note: "**Guardianship Case Information**"
+    show if: custodyvisitation_priorcase_guardianship
+	- Change answer: custodyvisitation_priorcase_guardianship_casenumber
+		button: |
+      * Case Number: **${custodyvisitation_priorcase_guardianship_casenumber}**
+      * Court Name and Location: **${custodyvisitation_priorcase_guardianship_court}**
+      * Court Order or Judgment Date: **${custodyvisitation_priorcase_guardianship_date}**
+      * Child or Children Involved in the Case: **${custodyvisitation_priorcase_guardianship_children}**
+      * Your Connection to the Case: **${custodyvisitation_priorcase_guardianship_connection}**
+      * Is the case ongoing? **${yesno(custodyvisitation_priorcase_guardianship_ongoing)}**
+
+  - note: "**Other Case Information**"
+    show if: custodyvisitation_priorcase_other
+	- Change answer: custodyvisitation_priorcase_other_casenumber
+		button: |
+      * Case Number: **${custodyvisitation_priorcase_other_casenumber}**
+      * Court Name and Location: **${custodyvisitation_priorcase_other_court}**
+      * Court Order or Judgment Date: **${custodyvisitation_priorcase_other_date}**
+      * Child or Children Involved in the Case: **${custodyvisitation_priorcase_other_children}**
+      * Your Connection to the Case: **${custodyvisitation_priorcase_other_connection}**
+      * Is the case ongoing? **${yesno(custodyvisitation_priorcase_other_ongoing)}**other
+  
+  - note: "**Juvenile Delinquency/Juvenile Dependency Case Information**"
+    show if: custodyvisitation_priorcase_juvenile
+	- Change answer: custodyvisitation_priorcase_juvenile_casenumber
+		button: |
+      * Case Number: **${custodyvisitation_priorcase_juvenile_casenumber}**
+      * Court Name and Location: **${custodyvisitation_priorcase_juvenile_court}**
+ 
+  - note: "**Adoption Case Information**"
+    show if: custodyvisitation_priorcase_adoption
+	- Change answer: custodyvisitation_priorcase_adoption_casenumber
+		button: |
+      * Case Number: **${custodyvisitation_priorcase_adoption_casenumber}**
+      * Court Name and Location: **${custodyvisitation_priorcase_adoption_court}**
+
+field: review5
+---
+question: |
   % if children.target_number >= 2: 
     **Active Restraining/Protective Orders Involving your Children**
   % else:
     **Active Restraining/Protective Orders Involving your Child**
   % endif
 fields: 
-  - Are there any domestic violence restraining orders or protective orders involving any of your children that are now in effect?: custodyvisitation_priorrestrainingorders_yes
+  - Are there any restraining orders or protective orders involving any of your children that are now in effect?: custodyvisitation_priorrestrainingorders_yes
     datatype: yesnoradio
     label above field: true
   - note: "Select each type of restraining/protective order currently in effect."
     show if: custodyvisitation_priorrestrainingorders_yes
     
-  - Criminal: custodyvisitation_priorrestrainingorders_criminal
+  - Criminal (such as CPO): custodyvisitation_priorrestrainingorders_criminal
     datatype: yesnowide
     show if: custodyvisitation_priorrestrainingorders_yes
     help: |
       E.g.: Criminal Protective Order
-  - Family: custodyvisitation_priorrestrainingorders_family
+  - Family (such as DVRO): custodyvisitation_priorrestrainingorders_family
     datatype: yesnowide
     show if: custodyvisitation_priorrestrainingorders_yes
     help: |
@@ -3517,7 +3573,6 @@ fields:
     show if: custodyvisitation_priorrestrainingorders_criminal
   - County: custodyvisitation_priorrestrainingorders_criminal_county
     show if: custodyvisitation_priorrestrainingorders_criminal
-    code: counties_list
   - State: custodyvisitation_priorrestrainingorders_criminal_state
     show if: custodyvisitation_priorrestrainingorders_criminal
     code: states_list()
@@ -3536,7 +3591,6 @@ fields:
     show if: custodyvisitation_priorrestrainingorders_family
   - County: custodyvisitation_priorrestrainingorders_family_county
     show if: custodyvisitation_priorrestrainingorders_family
-    code: counties_list
   - State: custodyvisitation_priorrestrainingorders_family_state
     show if: custodyvisitation_priorrestrainingorders_family
     code: states_list()
@@ -3555,7 +3609,6 @@ fields:
     show if: custodyvisitation_priorrestrainingorders_juvenile
   - County: custodyvisitation_priorrestrainingorders_juvenile_county
     show if: custodyvisitation_priorrestrainingorders_juvenile
-    code: counties_list
   - State: custodyvisitation_priorrestrainingorders_juvenile_state
     show if: custodyvisitation_priorrestrainingorders_juvenile
     code: states_list()
@@ -3574,7 +3627,6 @@ fields:
     show if: custodyvisitation_priorrestrainingorders_other
   - County: custodyvisitation_priorrestrainingorders_other_county
     show if: custodyvisitation_priorrestrainingorders_other
-    code: counties_list
   - State: custodyvisitation_priorrestrainingorders_other_state
     show if: custodyvisitation_priorrestrainingorders_other
     code: states_list()
@@ -3588,6 +3640,47 @@ fields:
     datatype: files
     show if: custodyvisitation_priorrestrainingorders_other
     required: false
+---
+question: |
+	Please review your answers below
+review:
+	- note: "**Criminal Restraining/Protective Order Case Information**"
+    show if: custodyvisitation_priorrestrainingorders_criminal
+	- Change answer: custodyvisitation_priorrestrainingorders_criminal_county
+		button: |
+      * Case Number: **${custodyvisitation_priorrestrainingorders_criminal_casenumber}**
+      * Court County: **${custodyvisitation_priorrestrainingorders_criminal_county}** 
+      * Court State: **${custodyvisitation_priorrestrainingorders_criminal_state}**
+      * Orders Expire: **${custodyvisitation_priorrestrainingorders_criminal_expiration}**
+      
+  - note: "**Family Restraining/Protective Order (DVRO) Case Information**"
+    show if: custodyvisitation_priorrestrainingorders_family
+	- Change answer: custodyvisitation_priorrestrainingorders_family_county
+		button: |
+      * Case Number: **${custodyvisitation_priorrestrainingorders_family_casenumber}**
+      * Court County: **${custodyvisitation_priorrestrainingorders_family_county}** 
+      * Court State: **${custodyvisitation_priorrestrainingorders_family_state}**
+      * Orders Expire: **${custodyvisitation_priorrestrainingorders_family_expiration}**
+      
+  - note: "**Juvenile Delinquency/Dependency Restraining/Protective Order Case Information**"
+    show if: custodyvisitation_priorrestrainingorders_juvenile
+	- Change answer: custodyvisitation_priorrestrainingorders_juvenile_county
+		button: |
+      * Case Number: **${custodyvisitation_priorrestrainingorders_juvenile_casenumber}**
+      * Court County: **${custodyvisitation_priorrestrainingorders_juvenile_county}** 
+      * Court State: **${custodyvisitation_priorrestrainingorders_juvenile_state}**
+      * Orders Expire: **${custodyvisitation_priorrestrainingorders_juvenile_expiration}**
+      
+  - note: "**Other Restraining/Protective Order Case Information**"
+    show if: custodyvisitation_priorrestrainingorders_other
+	- Change answer: custodyvisitation_priorrestrainingorders_other_county
+		button: |
+      * Case Number: **${custodyvisitation_priorrestrainingorders_other_casenumber}**
+      * Court County: **${custodyvisitation_priorrestrainingorders_other_county}** 
+      * Court State: **${custodyvisitation_priorrestrainingorders_other_state}**
+      * Orders Expire: **${custodyvisitation_priorrestrainingorders_other_expiration}**
+      
+field: review6
 ---
 question: |
   **Other People With or Claiming to Have Custody or Visitation Rights**
