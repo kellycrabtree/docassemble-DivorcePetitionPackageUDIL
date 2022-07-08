@@ -210,6 +210,8 @@ code: |
     if custodyvisitation_priorrestrainingorders_yes:
       review6
     otherpeoplewithcustodyrights_exist
+    if otherpeoplewithcustodyrights_exist:
+      review7
   
   nav.set_section('yourchildcustody')
   if children.there_are_any:
@@ -218,63 +220,62 @@ code: |
     cc_info2
     if alleged_abuse:
       cc_info_dv
-    custodyvisitation_requesting_orders
-    if custodyvisitation_requesting_orders:
-      if cc_agreement:
-        cc_agreement_info
-      for child in children:
-        continue_to_legalcustody
-        child.type_of_legal_custody
-      for child in children:
-        continue_to_physicalcustody
-        child.type_of_physical_custody
-      custody_review
-      nav.set_section('yourvisitation')
-      for child in children:
-        continue_to_visitation
-        granted_visitation
-        if scheduled_visitation:
-          visitation_weekends
-        if granted_visitation: 
-          supervisedvisitation
-          responsibility_for_transportation
-          travel_with_children_state
-          holiday_schedule
-          if holiday_schedule:
-            holiday_info
-            holiday_start_time
-            additionalholidays.there_are_any
-            if additionalholidays.there_are_any:
-              additionalholidays.gather()
-            threeday_weekends
-            if vacations: 
-              vacations_pet
-        nav.set_section('youradditionalprovisions')
-        child_abduction_risk
-        if child_abduction_risk:
-          if custodyvisitation_priorcase_yes:
-            flightrisk_violated_custody_orders
-          flightrisk_no_ties
-          post_a_bond
-        if granted_visitation:
-          additional_physical_custody_provisions
-          if additional_physical_custody_provisions:
-            add_physicalcustody_pet
-          if child.type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
-            joint_legal_custody_provisions
-            if joint_legal_custody_provisions: 
-              changing_schools
-        if custodyvisitation_requesting_orders and not cc_agreement:
-          custodyvisitation_requesting_temporary_orders
-          if custodyvisitation_requesting_temporary_orders:
-            custodyvisitation_requesting_exparte_orders
-          if custodyvisitation_requesting_temporary_orders and custodyvisitation_priorcase_yes:
-            current_custody_order
-          if custodyvisitation_requesting_temporary_orders and not custodyvisitation_requesting_exparte_orders:
-            explain_custodyvisitation
-          if custodyvisitation_requesting_exparte_orders:
-            explain_custodyvisitation_exparte
-        custodyvisitation_otherorders
+    cc_agreement
+    if cc_agreement:
+      cc_agreement_info
+    for child in children:
+      continue_to_legalcustody
+      child.type_of_legal_custody
+    for child in children:
+      continue_to_physicalcustody
+      child.type_of_physical_custody
+    review8_custody
+    nav.set_section('yourvisitation')
+    for child in children:
+      continue_to_visitation
+      granted_visitation
+      if scheduled_visitation:
+        visitation_weekends
+      if granted_visitation: 
+        supervisedvisitation
+        responsibility_for_transportation
+        travel_with_children_state
+        holiday_schedule
+        if holiday_schedule:
+          holiday_info
+          holiday_start_time
+          additionalholidays.there_are_any
+          if additionalholidays.there_are_any:
+            additionalholidays.gather()
+          threeday_weekends
+          if vacations: 
+            vacations_pet
+      nav.set_section('youradditionalprovisions')
+      child_abduction_risk
+      if child_abduction_risk:
+        if custodyvisitation_priorcase_yes:
+          flightrisk_violated_custody_orders
+        flightrisk_no_ties
+        post_a_bond
+      if granted_visitation:
+        additional_physical_custody_provisions
+        if additional_physical_custody_provisions:
+          add_physicalcustody_pet
+        if child.type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
+          joint_legal_custody_provisions
+          if joint_legal_custody_provisions: 
+            changing_schools
+      if not cc_agreement:
+        custodyvisitation_requesting_temporary_orders
+        if custodyvisitation_requesting_temporary_orders:
+          custodyvisitation_requesting_exparte_orders
+        if custodyvisitation_requesting_temporary_orders and custodyvisitation_priorcase_yes:
+          current_custody_order
+        if custodyvisitation_requesting_temporary_orders and not custodyvisitation_requesting_exparte_orders:
+          explain_custodyvisitation
+        if custodyvisitation_requesting_exparte_orders:
+          explain_custodyvisitation_exparte
+      custodyvisitation_otherorders
     else:
       cs_intro
   else:
@@ -843,7 +844,6 @@ review:
     button: "Your Phone Number: **${pet.phone}**"
   - Change answer: pet.email
     button: "Your Email: **${pet.email}**"
-    
   - Change answer: resp.name.first
     button: |
       % if married:
@@ -2005,7 +2005,7 @@ fields:
     choices: 
       - Male: sex_male
       - Female: sex_female
-  - Is there a third parent listed on this child's birth certificate?: children[i].otherparent_exists
+  - Is there a **third** parent listed on this child's birth certificate? (Click the help button for an explanation): children[i].otherparent_exists
     datatype: yesnoradio
     help: |
       Very rarely is this the case, as this question mainly addresses rare instaces of children born to three legal parents: most typically, two same-sex parents that are married or registered domestic partners and a third, biological parent. If a child is born into your union, you are treated as the child’s legal parents, under the presumption of parenthood. California is one of very few states that have granted same sex parents this presumption. As of 2014, as many as three parents can now be listed on a child’s birth certificate, thereby giving all parties involved protected parental rights. 
@@ -3700,7 +3700,7 @@ fields:
     datatype: yesnoradio
     show if: otherpeoplewithcustodyrights_exist
     help: |
-      Select 'Yes' if any of your children currently live with this person. 
+      Select 'Yes' if any of your children currently live with this person instead of you or ${resp.name.first}. 
   - Does this person claim custody rights?: custodyvisitationrights_person1_claimscustody
     datatype: yesnoradio
     show if: 
@@ -3725,7 +3725,7 @@ fields:
   - Does this person have physical custody of your child(ren)?: custodyvisitationrights_person2_hascustody
     datatype: yesnoradio
     help: |
-      Select 'Yes' if any of your children currently live with this person. 
+      Select 'Yes' if any of your children currently live with this person instead of you or ${resp.name.first}.  
     show if: custodyvisitationrights_person2
   - Does this person claim custody rights?: custodyvisitationrights_person2_claimscustody
     datatype: yesnoradio
@@ -3751,7 +3751,7 @@ fields:
   - Does this person have physical custody of your child(ren)?: custodyvisitationrights_person3_hascustody
     datatype: yesnoradio
     help: |
-      Select 'Yes' if any of your children currently live with this person. 
+      Select 'Yes' if any of your children currently live with this person instead of you or ${resp.name.first}. 
     show if: custodyvisitationrights_person3
   - Does this person claim custody rights?: custodyvisitationrights_person3_claimscustody
     datatype: yesnoradio
@@ -3764,6 +3764,47 @@ fields:
   - Over which children is this person claiming custody and/or visitation rights? Write each child's full name (*separated by commas, if applicable)*: custodyvisitationrights_person3_children
     label above field: true
     show if: custodyvisitationrights_person3
+---
+question: |
+  Please review your answers below
+review:
+  - note: "**People Claiming Custody or Visitation Rights over your Children**"
+    show if: otherpeoplewithcustodyrights_exist
+    
+  - note: "**Person 1:** ${custodyvisitationrights_person1_name}"
+	  show if: otherpeoplewithcustodyrights_exist
+	- Change answer: custodyvisitationrights_person1_address1
+		button: |
+      * Name: **${custodyvisitationrights_person1_name}**
+      * Address: **${custodyvisitationrights_person1_address1}, ${custodyvisitationrights_person1_address2}**
+      * Has Physical Custody: **${yesno(custodyvisitationrights_person1_hascustody)}**
+      * Claims Custody Rights: **${noyes(custodyvisitationrights_person1_hascustody)}**
+      * Claims Visitation Rights: **${yesno(custodyvisitationrights_person1_claimsvisitation)}**
+      * Over which children: **${custodyvisitationrights_person1_children}**
+
+  - note: "**Person 2:** ${custodyvisitationrights_person2_name}"
+	  show if: custodyvisitationrights_person2
+	- Change answer: custodyvisitationrights_person2_address1
+		button: |
+      * Name: **${custodyvisitationrights_person2_name}**
+      * Address: **${custodyvisitationrights_person2_address1}, ${custodyvisitationrights_person2_address2}**
+      * Has Physical Custody: **${yesno(custodyvisitationrights_person2_hascustody)}**
+      * Claims Custody Rights: **${noyes(custodyvisitationrights_person2_hascustody)}**
+      * Claims Visitation Rights: **${yesno(custodyvisitationrights_person2_claimsvisitation)}**
+      * Over which children: **${custodyvisitationrights_person2_children}**
+      
+  - note: "**Person 3:** ${custodyvisitationrights_person3_name}"
+	  show if: custodyvisitationrights_person3
+	- Change answer: custodyvisitationrights_person3_address1
+		button: |
+      * Name: **${custodyvisitationrights_person3_name}**
+      * Address: **${custodyvisitationrights_person3_address1}, ${custodyvisitationrights_person3_address2}**
+      * Has Physical Custody: **${yesno(custodyvisitationrights_person3_hascustody)}**
+      * Claims Custody Rights: **${noyes(custodyvisitationrights_person3_hascustody)}**
+      * Claims Visitation Rights: **${yesno(custodyvisitationrights_person3_claimsvisitation)}**
+      * Over which children: **${custodyvisitationrights_person3_children}**
+
+field: review7
 ---
 #### start of child custody and visitation question blocks 
 question: |
@@ -3845,19 +3886,12 @@ continue button field: cc_info_dv
 question: |
   **Requesting Orders:** Child Custody and Visitation  
 fields:
-  - Would you like to request a child custody and visitation order for your children?: custodyvisitation_requesting_orders
-    datatype: yesnoradio
-    label above field: true
   - Do you and ${otherparent.name.first} have, or are you both creating, a written agreement regarding child custody and visitation?: cc_agreement
     datatype: yesnoradio 
     label above field: true
-    show if: custodyvisitation_requesting_orders
   - note: "If you select 'Yes,' you will be directed to answer questions that will fill in our Child Custody and Visitation Agreement template. Click [here](link) to view that template."
-    show if: custodyvisitation_requesting_orders
   - note: "If you would rather request your preferred orders now (in your Petition) and wait for ${otherparent.name.first} to file a Response with his or her preferred orders prior to structuring your custody and visitation agreement, select 'No.'"
-    show if: custodyvisitation_requesting_orders
   - note: "As a reminder, if you are not sure of the specific child custody and visitation orders that you want when you are filing your Petition, you do need to at least state in your Petition what physical and legal custody orders you want, and can state that you want “reasonable” visitation orders issued--meaning that visitation will be determined later. The specific visitation orders can later be determined through the default prove up process, or through the Request for Order process [insert link]"
-    show if: custodyvisitation_requesting_orders
 ---
 question: |
   **Child Custody and Visitation Agreement**
@@ -4051,256 +4085,293 @@ fields:
       - Joint Physical Custody to ${ pet } and ${ otherparent }: jointphysicalcustody_to_pet_and_otherparent
 ---
 question: |
-  **Requesting Orders:** Child Custody and Visitation
+  Please review your answers below
 subquestion: |
-  **Review Your Requested Custody Orders**
-  
-  Based on your responses, you have requested:
-  
-  % if children.item(0).type_of_legal_custody == 'solelegalcustody_to_pet':
-  - Sole legal custody of ${children.item(0).name} to yourself
-  % elif (children.item(0).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(0).otherparent_exists:
-  - Sole legal custody of ${children.item(0).name} to ${resp}
-  % elif (children.item(0).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(0).otherparent_exists:
-  - Sole legal custody of ${children.item(0).name} to ${other}
-  % elif children.item(0).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
-  - Joint legal custody of ${children.item(0).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(1).type_of_legal_custody == 'solelegalcustody_to_pet':
-  - Sole legal custody of ${children.item(1).name} to yourself
-  % elif (children.item(1).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(1).otherparent_exists:
-  - Sole legal custody of ${children.item(1).name} to ${resp}
-  % elif (children.item(1).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(1).otherparent_exists:
-  - Sole legal custody of ${children.item(1).name} to ${other}
-  % elif children.item(1).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
-  - Joint legal custody of ${children.item(1).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(2).type_of_legal_custody == 'solelegalcustody_to_pet':
-  - Sole legal custody of ${children.item(2).name} to yourself
-  % elif (children.item(2).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(2).otherparent_exists:
-  - Sole legal custody of ${children.item(2).name} to ${resp}
-  % elif (children.item(2).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(2).otherparent_exists:
-  - Sole legal custody of ${children.item(2).name} to ${other}
-  % elif children.item(2).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
-  - Joint legal custody of ${children.item(2).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(3).type_of_legal_custody == 'solelegalcustody_to_pet':
-  - Sole legal custody of ${children.item(3).name} to yourself
-  % elif (children.item(3).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(3).otherparent_exists:
-  - Sole legal custody of ${children.item(3).name} to ${resp}
-  % elif (children.item(3).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(3).otherparent_exists:
-  - Sole legal custody of ${children.item(3).name} to ${other}
-  % elif children.item(3).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
-  - Joint legal custody of ${children.item(3).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(4).type_of_legal_custody == 'solelegalcustody_to_pet':
-  - Sole legal custody of ${children.item(4).name} to yourself
-  % elif (children.item(4).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(4).otherparent_exists:
-  - Sole legal custody of ${children.item(4).name} to ${resp}
-  % elif (children.item(4).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(4).otherparent_exists:
-  - Sole legal custody of ${children.item(4).name} to ${other}
-  % elif children.item(4).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
-  - Joint legal custody of ${children.item(4).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(5).type_of_legal_custody == 'solelegalcustody_to_pet':
-  - Sole legal custody of ${children.item(5).name} to yourself
-  % elif (children.item(5).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(5).otherparent_exists:
-  - Sole legal custody of ${children.item(5).name} to ${resp}
-  % elif (children.item(5).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(5).otherparent_exists:
-  - Sole legal custody of ${children.item(5).name} to ${other}
-  % elif children.item(5).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
-  - Joint legal custody of ${children.item(5).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(6).type_of_legal_custody == 'solelegalcustody_to_pet':
-  - Sole legal custody of ${children.item(6).name} to yourself
-  % elif (children.item(6).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(6).otherparent_exists:
-  - Sole legal custody of ${children.item(6).name} to ${resp}
-  % elif (children.item(6).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(6).otherparent_exists:
-  - Sole legal custody of ${children.item(6).name} to ${other}
-  % elif children.item(6).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
-  - Joint legal custody of ${children.item(6).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(7).type_of_legal_custody == 'solelegalcustody_to_pet':
-  - Sole legal custody of ${children.item(7).name} to yourself
-  % elif (children.item(7).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(7).otherparent_exists:
-  - Sole legal custody of ${children.item(7).name} to ${resp}
-  % elif (children.item(7).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(7).otherparent_exists:
-  - Sole legal custody of ${children.item(7).name} to ${other}
-  % elif children.item(7).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
-  - Joint legal custody of ${children.item(7).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(8).type_of_legal_custody == 'solelegalcustody_to_pet':
-  - Sole legal custody of ${children.item(8).name} to yourself
-  % elif (children.item(8).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(8).otherparent_exists:
-  - Sole legal custody of ${children.item(8).name} to ${resp}
-  % elif (children.item(8).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(8).otherparent_exists:
-  - Sole legal custody of ${children.item(8).name} to ${other}
-  % elif children.item(8).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
-  - Joint legal custody of ${children.item(8).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(9).type_of_legal_custody == 'solelegalcustody_to_pet':
-  - Sole legal custody of ${children.item(9).name} to yourself
-  % elif (children.item(9).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(9).otherparent_exists:
-  - Sole legal custody of ${children.item(9).name} to ${resp}
-  % elif (children.item(9).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(9).otherparent_exists:
-  - Sole legal custody of ${children.item(9).name} to ${other}
-  % elif children.item(9).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
-  - Joint legal custody of ${children.item(9).name} between yourself and ${otherparent}
-  % endif
-  
-  % if children.item(0).type_of_physical_custody == 'solephysicalcustody_to_pet':
-  - Sole physical custody of ${children.item(0).name} to yourself
-  % elif (children.item(0).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(0).otherparent_exists:
-  - Sole physical custody of ${children.item(0).name} to ${resp}
-  % elif (children.item(0).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(0).otherparent_exists:
-  - Sole physical custody of ${children.item(0).name} to ${other}
-  % elif children.item(0).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
-  - Primary physical custody of ${children.item(0).name} to yourself
-  % elif (children.item(0).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(0).otherparent_exists:
-  - Primary physical custody of ${children.item(0).name} to ${resp}
-  % elif (children.item(0).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(0).otherparent_exists:
-  - Primary physical custody of ${children.item(0).name} to ${other}
-  % elif children.item(0).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
-  - Joint physical custody of ${children.item(0).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(1).type_of_physical_custody == 'solephysicalcustody_to_pet':
-  - Sole physical custody of ${children.item(1).name} to yourself
-  % elif (children.item(1).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(1).otherparent_exists:
-  - Sole physical custody of ${children.item(1).name} to ${resp}
-  % elif (children.item(1).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(1).otherparent_exists:
-  - Sole physical custody of ${children.item(1).name} to ${other}
-  % elif children.item(1).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
-  - Primary physical custody of ${children.item(1).name} to yourself
-  % elif (children.item(1).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(1).otherparent_exists:
-  - Primary physical custody of ${children.item(1).name} to ${resp}
-  % elif (children.item(1).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(1).otherparent_exists:
-  - Primary physical custody of ${children.item(1).name} to ${other}
-  % elif children.item(1).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
-  - Joint physical custody of ${children.item(1).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(2).type_of_physical_custody == 'solephysicalcustody_to_pet':
-  - Sole physical custody of ${children.item(2).name} to yourself
-  % elif (children.item(2).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(2).otherparent_exists:
-  - Sole physical custody of ${children.item(2).name} to ${resp}
-  % elif (children.item(2).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(2).otherparent_exists:
-  - Sole physical custody of ${children.item(2).name} to ${other}
-  % elif children.item(2).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
-  - Primary physical custody of ${children.item(2).name} to yourself
-  % elif (children.item(2).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(2).otherparent_exists:
-  - Primary physical custody of ${children.item(2).name} to ${resp}
-  % elif (children.item(2).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(2).otherparent_exists:
-  - Primary physical custody of ${children.item(2).name} to ${other}
-  % elif children.item(2).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
-  - Joint physical custody of ${children.item(2).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(3).type_of_physical_custody == 'solephysicalcustody_to_pet':
-  - Sole physical custody of ${children.item(3).name} to yourself
-  % elif (children.item(3).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(3).otherparent_exists:
-  - Sole physical custody of ${children.item(3).name} to ${resp}
-  % elif (children.item(3).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(3).otherparent_exists:
-  - Sole physical custody of ${children.item(3).name} to ${other}
-  % elif children.item(3).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
-  - Primary physical custody of ${children.item(3).name} to yourself
-  % elif (children.item(3).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(3).otherparent_exists:
-  - Primary physical custody of ${children.item(3).name} to ${resp}
-  % elif (children.item(3).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(3).otherparent_exists:
-  - Primary physical custody of ${children.item(3).name} to ${other}
-  % elif children.item(3).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
-  - Joint physical custody of ${children.item(3).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(4).type_of_physical_custody == 'solephysicalcustody_to_pet':
-  - Sole physical custody of ${children.item(4).name} to yourself
-  % elif (children.item(4).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(4).otherparent_exists:
-  - Sole physical custody of ${children.item(4).name} to ${resp}
-  % elif (children.item(4).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(4).otherparent_exists:
-  - Sole physical custody of ${children.item(4).name} to ${other}
-  % elif children.item(4).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
-  - Primary physical custody of ${children.item(4).name} to yourself
-  % elif (children.item(4).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(4).otherparent_exists:
-  - Primary physical custody of ${children.item(4).name} to ${resp}
-  % elif (children.item(4).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(4).otherparent_exists:
-  - Primary physical custody of ${children.item(4).name} to ${other}
-  % elif children.item(4).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
-  - Joint physical custody of ${children.item(4).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(5).type_of_physical_custody == 'solephysicalcustody_to_pet':
-  - Sole physical custody of ${children.item(5).name} to yourself
-  % elif (children.item(5).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(5).otherparent_exists:
-  - Sole physical custody of ${children.item(5).name} to ${resp}
-  % elif (children.item(5).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(5).otherparent_exists:
-  - Sole physical custody of ${children.item(5).name} to ${other}
-  % elif children.item(5).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
-  - Primary physical custody of ${children.item(5).name} to yourself
-  % elif (children.item(5).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(5).otherparent_exists:
-  - Primary physical custody of ${children.item(5).name} to ${resp}
-  % elif (children.item(5).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(5).otherparent_exists:
-  - Primary physical custody of ${children.item(5).name} to ${other}
-  % elif children.item(5).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
-  - Joint physical custody of ${children.item(5).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(6).type_of_physical_custody == 'solephysicalcustody_to_pet':
-  - Sole physical custody of ${children.item(6).name} to yourself
-  % elif (children.item(6).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(6).otherparent_exists:
-  - Sole physical custody of ${children.item(6).name} to ${resp}
-  % elif (children.item(6).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(6).otherparent_exists:
-  - Sole physical custody of ${children.item(6).name} to ${other}
-  % elif children.item(6).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
-  - Primary physical custody of ${children.item(6).name} to yourself
-  % elif (children.item(6).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(6).otherparent_exists:
-  - Primary physical custody of ${children.item(6).name} to ${resp}
-  % elif (children.item(6).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(6).otherparent_exists:
-  - Primary physical custody of ${children.item(6).name} to ${other}
-  % elif children.item(6).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
-  - Joint physical custody of ${children.item(6).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(7).type_of_physical_custody == 'solephysicalcustody_to_pet':
-  - Sole physical custody of ${children.item(7).name} to yourself
-  % elif (children.item(7).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(7).otherparent_exists:
-  - Sole physical custody of ${children.item(7).name} to ${resp}
-  % elif (children.item(7).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(7).otherparent_exists:
-  - Sole physical custody of ${children.item(7).name} to ${other}
-  % elif children.item(7).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
-  - Primary physical custody of ${children.item(7).name} to yourself
-  % elif (children.item(7).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(7).otherparent_exists:
-  - Primary physical custody of ${children.item(7).name} to ${resp}
-  % elif (children.item(7).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(7).otherparent_exists:
-  - Primary physical custody of ${children.item(7).name} to ${other}
-  % elif children.item(7).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
-  - Joint physical custody of ${children.item(7).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(8).type_of_physical_custody == 'solephysicalcustody_to_pet':
-  - Sole physical custody of ${children.item(8).name} to yourself
-  % elif (children.item(8).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(8).otherparent_exists:
-  - Sole physical custody of ${children.item(8).name} to ${resp}
-  % elif (children.item(8).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(8).otherparent_exists:
-  - Sole physical custody of ${children.item(8).name} to ${other}
-  % elif children.item(8).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
-  - Primary physical custody of ${children.item(8).name} to yourself
-  % elif (children.item(8).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(8).otherparent_exists:
-  - Primary physical custody of ${children.item(8).name} to ${resp}
-  % elif (children.item(8).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(8).otherparent_exists:
-  - Primary physical custody of ${children.item(8).name} to ${other}
-  % elif children.item(8).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
-  - Joint physical custody of ${children.item(8).name} between yourself and ${otherparent}
-  % endif
-  % if children.item(9).type_of_physical_custody == 'solephysicalcustody_to_pet':
-  - Sole physical custody of ${children.item(9).name} to yourself
-  % elif (children.item(9).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(9).otherparent_exists:
-  - Sole physical custody of ${children.item(9).name} to ${resp}
-  % elif (children.item(9).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(9).otherparent_exists:
-  - Sole physical custody of ${children.item(9).name} to ${other}
-  % elif children.item(9).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
-  - Primary physical custody of ${children.item(9).name} to yourself
-  % elif (children.item(9).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(9).otherparent_exists:
-  - Primary physical custody of ${children.item(9).name} to ${resp}
-  % elif (children.item(9).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(9).otherparent_exists:
-  - Primary physical custody of ${children.item(9).name} to ${other}
-  % elif children.item(9).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
-  - Joint physical custody of ${children.item(9).name} between yourself and ${otherparent}
-  % endif
-  
-  If this is incorrect, please go back and correct your responses.
-continue button field: custody_review
+  Based on your responses, you have requested the following custody orders:
+review: 
+  - Change answer: children[0].type_of_legal_custody
+		button: |
+      % if children.item(0).type_of_legal_custody == 'solelegalcustody_to_pet':
+      **Sole** legal custody of ${children.item(0).name} to **yourself (${pet.name})**
+      % elif (children.item(0).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(0).otherparent_exists:
+      **Sole** legal custody of ${children.item(0).name} to **${resp}**
+      % elif (children.item(0).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(0).otherparent_exists:
+      **Sole** legal custody of ${children.item(0).name} to **${other}**
+      % elif children.item(0).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
+      **Joint** legal custody of ${children.item(0).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+  - Change answer: children[1].type_of_legal_custody
+		button: |
+      % if children.item(1).type_of_legal_custody == 'solelegalcustody_to_pet':
+      **Sole** legal custody of ${children.item(1).name} to **yourself (${pet.name})**
+      % elif (children.item(1).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(1).otherparent_exists:
+      **Sole** legal custody of ${children.item(1).name} to **${resp}**
+      % elif (children.item(1).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(1).otherparent_exists:
+      **Sole** legal custody of ${children.item(1).name} to **${other}**
+      % elif children.item(1).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
+      **Joint** legal custody of ${children.item(1).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+  - Change answer: children[2].type_of_legal_custody
+		button: |
+      % if children.item(2).type_of_legal_custody == 'solelegalcustody_to_pet':
+      **Sole** legal custody of ${children.item(2).name} to **yourself (${pet.name})**
+      % elif (children.item(2).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(2).otherparent_exists:
+      **Sole** legal custody of ${children.item(2).name} to **${resp}**
+      % elif (children.item(2).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(2).otherparent_exists:
+      **Sole** legal custody of ${children.item(2).name} to **${other}**
+      % elif children.item(2).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
+      **Joint** legal custody of ${children.item(2).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+  - Change answer: children[3].type_of_legal_custody
+		button: |
+      % if children.item(3).type_of_legal_custody == 'solelegalcustody_to_pet':
+      **Sole** legal custody of ${children.item(3).name} to **yourself (${pet.name})**
+      % elif (children.item(3).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(3).otherparent_exists:
+      **Sole** legal custody of ${children.item(3).name} to **${resp}**
+      % elif (children.item(3).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(3).otherparent_exists:
+      **Sole** legal custody of ${children.item(3).name} to **${other}**
+      % elif children.item(3).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
+      **Joint** legal custody of ${children.item(3).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+  - Change answer: children[4].type_of_legal_custody
+		button: |
+      % if children.item(4).type_of_legal_custody == 'solelegalcustody_to_pet':
+      **Sole** legal custody of ${children.item(4).name} to **yourself (${pet.name})**
+      % elif (children.item(4).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(4).otherparent_exists:
+      **Sole** legal custody of ${children.item(4).name} to **${resp}**
+      % elif (children.item(4).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(4).otherparent_exists:
+      **Sole** legal custody of ${children.item(4).name} to **${other}**
+      % elif children.item(4).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
+      **Joint** legal custody of ${children.item(4).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+  - Change answer: children[5].type_of_legal_custody
+		button: |
+      % if children.item(5).type_of_legal_custody == 'solelegalcustody_to_pet':
+      **Sole** legal custody of ${children.item(5).name} to **yourself (${pet.name})**
+      % elif (children.item(5).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(5).otherparent_exists:
+      **Sole** legal custody of ${children.item(5).name} to **${resp}**
+      % elif (children.item(5).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(5).otherparent_exists:
+      **Sole** legal custody of ${children.item(5).name} to **${other}**
+      % elif children.item(5).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
+      **Joint** legal custody of ${children.item(5).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+  - Change answer: children[6].type_of_legal_custody
+		button: |
+      % if children.item(6).type_of_legal_custody == 'solelegalcustody_to_pet':
+      **Sole** legal custody of ${children.item(6).name} to **yourself (${pet.name})**
+      % elif (children.item(6).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(6).otherparent_exists:
+      **Sole** legal custody of ${children.item(6).name} to **${resp}**
+      % elif (children.item(6).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(6).otherparent_exists:
+      **Sole** legal custody of ${children.item(6).name} to **${other}**
+      % elif children.item(6).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
+      **Joint** legal custody of ${children.item(6).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+  - Change answer: children[7].type_of_legal_custody
+		button: |
+      % if children.item(7).type_of_legal_custody == 'solelegalcustody_to_pet':
+      **Sole** legal custody of ${children.item(7).name} to **yourself (${pet.name})**
+      % elif (children.item(7).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(7).otherparent_exists:
+      **Sole** legal custody of ${children.item(7).name} to **${resp}**
+      % elif (children.item(7).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(7).otherparent_exists:
+      **Sole** legal custody of ${children.item(7).name} to **${other}**
+      % elif children.item(7).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
+      **Joint** legal custody of ${children.item(7).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+  - Change answer: children[8].type_of_legal_custody
+		button: |
+      % if children.item(8).type_of_legal_custody == 'solelegalcustody_to_pet':
+      **Sole** legal custody of ${children.item(8).name} to **yourself (${pet.name})**
+      % elif (children.item(8).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(8).otherparent_exists:
+      **Sole** legal custody of ${children.item(8).name} to **${resp}**
+      % elif (children.item(8).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(8).otherparent_exists:
+      **Sole** legal custody of ${children.item(8).name} to **${other}**
+      % elif children.item(8).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
+      **Joint** legal custody of ${children.item(8).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+  - Change answer: children[9].type_of_legal_custody
+		button: |
+      % if children.item(9).type_of_legal_custody == 'solelegalcustody_to_pet':
+      **Sole** legal custody of ${children.item(9).name} to **yourself (${pet.name})**
+      % elif (children.item(9).type_of_legal_custody == 'solelegalcustody_to_otherparent') and not children.item(9).otherparent_exists:
+      **Sole** legal custody of ${children.item(9).name} to **${resp}**
+      % elif (children.item(9).type_of_legal_custody == 'solelegalcustody_to_otherparent') and children.item(9).otherparent_exists:
+      **Sole** legal custody of ${children.item(9).name} to **${other}**
+      % elif children.item(9).type_of_legal_custody == 'jointlegalcustody_to_pet_and_otherparent':
+      **Joint** legal custody of ${children.item(9).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+      
+  - Change answer: children[0].type_of_physical_custody
+		button: |
+      % if children.item(0).type_of_physical_custody == 'solephysicalcustody_to_pet':
+      **Sole** physical custody of ${children.item(0).name} to **yourself (${pet.name})**
+      % elif (children.item(0).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(0).otherparent_exists:
+      **Sole** physical custody of ${children.item(0).name} to **${resp}**
+      % elif (children.item(0).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(0).otherparent_exists:
+      **Sole** physical custody of ${children.item(0).name} to **${other}**
+      % elif children.item(0).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
+      **Primary** physical custody of ${children.item(0).name} to **yourself (${pet.name})**
+      % elif (children.item(0).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(0).otherparent_exists:
+      **Primary** physical custody of ${children.item(0).name} to **${resp}**
+      % elif (children.item(0).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(0).otherparent_exists:
+      **Primary** physical custody of ${children.item(0).name} to **${other}**
+      % elif children.item(0).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
+      **Joint** physical custody of ${children.item(0).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif 
+  - Change answer: children[1].type_of_physical_custody
+		button: |
+      % if children.item(1).type_of_physical_custody == 'solephysicalcustody_to_pet':
+      **Sole** physical custody of ${children.item(1).name} to **yourself (${pet.name})**
+      % elif (children.item(1).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(1).otherparent_exists:
+      **Sole** physical custody of ${children.item(1).name} to **${resp}**
+      % elif (children.item(1).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(1).otherparent_exists:
+      **Sole** physical custody of ${children.item(1).name} to **${other}**
+      % elif children.item(1).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
+      **Primary** physical custody of ${children.item(1).name} to **yourself (${pet.name})**
+      % elif (children.item(1).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(1).otherparent_exists:
+      **Primary** physical custody of ${children.item(1).name} to **${resp}**
+      % elif (children.item(1).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(1).otherparent_exists:
+      **Primary** physical custody of ${children.item(1).name} to **${other}**
+      % elif children.item(1).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
+      **Joint** physical custody of ${children.item(1).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif 
+  - Change answer: children[2].type_of_physical_custody
+		button: |
+      % if children.item(2).type_of_physical_custody == 'solephysicalcustody_to_pet':
+      **Sole** physical custody of ${children.item(2).name} to **yourself (${pet.name})**
+      % elif (children.item(2).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(2).otherparent_exists:
+      **Sole** physical custody of ${children.item(2).name} to **${resp}**
+      % elif (children.item(2).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(2).otherparent_exists:
+      **Sole** physical custody of ${children.item(2).name} to **${other}**
+      % elif children.item(2).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
+      **Primary** physical custody of ${children.item(2).name} to **yourself (${pet.name})**
+      % elif (children.item(2).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(2).otherparent_exists:
+      **Primary** physical custody of ${children.item(2).name} to **${resp}**
+      % elif (children.item(2).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(2).otherparent_exists:
+      **Primary** physical custody of ${children.item(2).name} to **${other}**
+      % elif children.item(2).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
+      **Joint** physical custody of ${children.item(2).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif 
+  - Change answer: children[3].type_of_physical_custody
+		button: |
+      % if children.item(3).type_of_physical_custody == 'solephysicalcustody_to_pet':
+      **Sole** physical custody of ${children.item(3).name} to **yourself (${pet.name})**
+      % elif (children.item(3).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(3).otherparent_exists:
+      **Sole** physical custody of ${children.item(3).name} to **${resp}**
+      % elif (children.item(3).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(3).otherparent_exists:
+      **Sole** physical custody of ${children.item(3).name} to **${other}**
+      % elif children.item(3).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
+      **Primary** physical custody of ${children.item(3).name} to **yourself (${pet.name})**
+      % elif (children.item(3).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(3).otherparent_exists:
+      **Primary** physical custody of ${children.item(3).name} to **${resp}**
+      % elif (children.item(3).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(3).otherparent_exists:
+      **Primary** physical custody of ${children.item(3).name} to **${other}**
+      % elif children.item(3).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
+      **Joint** physical custody of ${children.item(3).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif 
+  - Change answer: children[4].type_of_physical_custody
+		button: |
+      % if children.item(4).type_of_physical_custody == 'solephysicalcustody_to_pet':
+      **Sole** physical custody of ${children.item(4).name} to **yourself (${pet.name})**
+      % elif (children.item(4).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(4).otherparent_exists:
+      **Sole** physical custody of ${children.item(4).name} to **${resp}**
+      % elif (children.item(4).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(4).otherparent_exists:
+      **Sole** physical custody of ${children.item(4).name} to **${other}**
+      % elif children.item(4).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
+      **Primary** physical custody of ${children.item(4).name} to **yourself (${pet.name})**
+      % elif (children.item(4).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(4).otherparent_exists:
+      **Primary** physical custody of ${children.item(4).name} to **${resp}**
+      % elif (children.item(4).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(4).otherparent_exists:
+      **Primary** physical custody of ${children.item(4).name} to **${other}**
+      % elif children.item(4).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
+      **Joint** physical custody of ${children.item(4).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif 
+  - Change answer: children[5].type_of_physical_custody
+		button: |
+      % if children.item(5).type_of_physical_custody == 'solephysicalcustody_to_pet':
+      **Sole** physical custody of ${children.item(5).name} to **yourself (${pet.name})**
+      % elif (children.item(5).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(5).otherparent_exists:
+      **Sole** physical custody of ${children.item(5).name} to **${resp}**
+      % elif (children.item(5).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(5).otherparent_exists:
+      **Sole** physical custody of ${children.item(5).name} to **${other}**
+      % elif children.item(5).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
+      **Primary** physical custody of ${children.item(5).name} to **yourself (${pet.name})**
+      % elif (children.item(5).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(5).otherparent_exists:
+      **Primary** physical custody of ${children.item(5).name} to **${resp}**
+      % elif (children.item(5).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(5).otherparent_exists:
+      **Primary** physical custody of ${children.item(5).name} to **${other}**
+      % elif children.item(5).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
+      **Joint** physical custody of ${children.item(5).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif 
+  - Change answer: children[6].type_of_physical_custody
+		button: |
+      % if children.item(6).type_of_physical_custody == 'solephysicalcustody_to_pet':
+      **Sole** physical custody of ${children.item(6).name} to **yourself (${pet.name})**
+      % elif (children.item(6).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(6).otherparent_exists:
+      **Sole** physical custody of ${children.item(6).name} to **${resp}**
+      % elif (children.item(6).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(6).otherparent_exists:
+      **Sole** physical custody of ${children.item(6).name} to **${other}**
+      % elif children.item(6).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
+      **Primary** physical custody of ${children.item(6).name} to **yourself (${pet.name})**
+      % elif (children.item(6).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(6).otherparent_exists:
+      **Primary** physical custody of ${children.item(6).name} to **${resp}**
+      % elif (children.item(6).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(6).otherparent_exists:
+      **Primary** physical custody of ${children.item(6).name} to **${other}**
+      % elif children.item(6).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
+      **Joint** physical custody of ${children.item(6).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+  - Change answer: children[7].type_of_physical_custody
+		button: |
+      % if children.item(7).type_of_physical_custody == 'solephysicalcustody_to_pet':
+      **Sole** physical custody of ${children.item(7).name} to **yourself (${pet.name})**
+      % elif (children.item(7).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(7).otherparent_exists:
+      **Sole** physical custody of ${children.item(7).name} to **${resp}**
+      % elif (children.item(7).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(7).otherparent_exists:
+      **Sole** physical custody of ${children.item(7).name} to **${other}**
+      % elif children.item(7).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
+      **Primary** physical custody of ${children.item(7).name} to **yourself (${pet.name})**
+      % elif (children.item(7).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(7).otherparent_exists:
+      **Primary** physical custody of ${children.item(7).name} to **${resp}**
+      % elif (children.item(7).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(7).otherparent_exists:
+      **Primary** physical custody of ${children.item(7).name} to **${other}**
+      % elif children.item(7).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
+      **Joint** physical custody of ${children.item(7).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+  - Change answer: children[8].type_of_physical_custody
+		button: |
+      % if children.item(8).type_of_physical_custody == 'solephysicalcustody_to_pet':
+      **Sole** physical custody of ${children.item(8).name} to **yourself (${pet.name})**
+      % elif (children.item(8).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(8).otherparent_exists:
+      **Sole** physical custody of ${children.item(8).name} to **${resp}**
+      % elif (children.item(8).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(8).otherparent_exists:
+      **Sole** physical custody of ${children.item(8).name} to **${other}**
+      % elif children.item(8).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
+      **Primary** physical custody of ${children.item(8).name} to **yourself (${pet.name})**
+      % elif (children.item(8).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(8).otherparent_exists:
+      **Primary** physical custody of ${children.item(8).name} to **${resp}**
+      % elif (children.item(8).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(8).otherparent_exists:
+      **Primary** physical custody of ${children.item(8).name} to **${other}**
+      % elif children.item(8).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
+      **Joint** physical custody of ${children.item(8).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+  - Change answer: children[9].type_of_physical_custody
+		button: |
+      % if children.item(9).type_of_physical_custody == 'solephysicalcustody_to_pet':
+      **Sole** physical custody of ${children.item(9).name} to **yourself (${pet.name})**
+      % elif (children.item(9).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and not children.item(9).otherparent_exists:
+      **Sole** physical custody of ${children.item(9).name} to **${resp}**
+      % elif (children.item(9).type_of_physical_custody == 'solephysicalcustody_to_otherparent') and children.item(9).otherparent_exists:
+      **Sole** physical custody of ${children.item(9).name} to **${other}**
+      % elif children.item(9).type_of_physical_custody == 'primaryphysicalcustody_to_pet':
+      **Primary** physical custody of ${children.item(9).name} to **yourself (${pet.name})**
+      % elif (children.item(9).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and not children.item(9).otherparent_exists:
+      **Primary** physical custody of ${children.item(9).name} to **${resp}**
+      % elif (children.item(9).type_of_physical_custody == 'primaryphysicalcustody_to_otherparent') and children.item(9).otherparent_exists:
+      **Primary** physical custody of ${children.item(9).name} to **${other}**
+      % elif children.item(9).type_of_physical_custody == 'jointphysicalcustody_to_pet_and_otherparent':
+      **Joint** physical custody of ${children.item(9).name} between **yourself (${pet.name})** and **${otherparent}**
+      % endif
+      
+field: review8_custody
 ---
 question: |
   **Requesting Orders:** Child Custody and Visitation
@@ -9448,7 +9519,7 @@ attachments:
       - Prior Existing Marriage: No
       - Unsound Mind: No
       - Physical Incapacity: No
-      - FL311: "${custodyvisitation_requesting_orders}"
+      - FL311: "${children.there_are_any}"
       - FL312: "${child_abduction_risk}"
       - FL341C: "${holiday_schedule}"
       - FL341D: "${additional_physical_custody_provisions}"
